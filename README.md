@@ -24,33 +24,6 @@
 
 ## 节点接口
 
-### 输入端口
-
-| 端口名 | 类型 | 必需 | 说明 |
-|--------|------|------|------|
-| positive | CONDITIONING | 是 | 正向提示条件 |
-| negative | CONDITIONING | 是 | 负向提示条件 |
-| vae | VAE | 是 | VAE模型 |
-| width | INT | 是 | 输出视频宽度，默认832 |
-| height | INT | 是 | 输出视频高度，默认480 |
-| length | INT | 是 | 视频帧数，默认81 |
-| batch_size | INT | 是 | 批次大小，默认1 |
-| motion_amplitude | FLOAT | 是 | 动态增强幅度，默认1.3，范围1.0-5.0 |
-| color_protect | BOOLEAN | 是 | 启用颜色保护，默认开启 |
-| correct_strength | FLOAT | 是 | 颜色校正强度，默认0.05，范围0.0-0.3 |
-| clip_vision | CLIP_VISION_OUTPUT | 否 | CLIP视觉输出（可选） |
-| start_image | IMAGE | 否 | 起始图像（可选） |
-
-### 输出端口
-
-| 端口名 | 类型 | 说明 |
-|--------|------|------|
-| high_positive | CONDITIONING | 高动态正向条件（连接高噪采样器） |
-| high_negative | CONDITIONING | 高动态负向条件（连接高噪采样器） |
-| low_positive | CONDITIONING | 低动态正向条件（连接低噪采样器） |
-| low_negative | CONDITIONING | 低动态负向条件（连接低噪采样器） |
-| latent | LATENT | 潜空间数据 |
-
 ## 参数详解
 
 ### motion_amplitude（动态增强幅度）
@@ -88,25 +61,6 @@
 2. 如果还有轻微偏色，逐步增加到0.1
 3. 如果动态感觉被削弱，立即降回0.05
 4. 该参数只影响颜色，不影响动态幅度
-
-## 工作流配置示例
-
-### 双采样器标准配置
-
-这是推荐的工作流连接方式，充分利用高噪模型生成动态、低噪模型优化细节的互补优势：
-
-```
-[PainterI2VAdvanced]
-     │
-     ├── high_positive ──→ [KSamplerAdvanced #1 (高噪模型)] ──→
-     ├── high_negative ──→ [KSamplerAdvanced #1]                │
-     ├── low_positive ───→ [KSamplerAdvanced #2 (低噪模型)] ──→ │
-     ├── low_negative ───→ [KSamplerAdvanced #2]                │
-     └── latent ─────────→ 两个采样器的latent输入              │
-                                                                │
-                                                                ↓
-                                                          [VAE Decode]
-```
 
 ### 参数配置建议
 
