@@ -21,7 +21,7 @@ class PainterI2VAdvanced(io.ComfyNode):
                 io.Int.Input("height", default=480, min=16, max=4096, step=16),
                 io.Int.Input("length", default=81, min=1, max=4096, step=4),
                 io.Int.Input("batch_size", default=1, min=1, max=4096),
-                io.Float.Input("motion_amplitude", default=1.3, min=1.0, max=5.0, step=0.05),
+                io.Float.Input("motion_amplitude", default=1.3, min=1.0, max=2.0, step=0.05),
                 io.Boolean.Input("color_protect", default=True),
                 io.Float.Input("correct_strength", default=0.05, min=0.0, max=0.3, step=0.05),
                 io.ClipVisionOutput.Input("clip_vision", optional=True),
